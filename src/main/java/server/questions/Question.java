@@ -26,6 +26,5 @@ public class Question {
         this.numFailure = numFailure;
         this.category = category;
         this.answers = answers;
-        this.question = question;
     }
 }

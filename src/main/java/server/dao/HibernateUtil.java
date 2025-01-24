@@ -4,6 +4,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import server.games.Game;
+import server.games.Player;
 import server.questions.Answer;
 import server.questions.Category;
 import server.questions.Question;
@@ -19,6 +21,8 @@ public class HibernateUtil {
                         .addAnnotatedClass(Category.class)
                         .addAnnotatedClass(Answer.class)
                         .addAnnotatedClass(Question.class)
+                        .addAnnotatedClass(Player.class)
+                        .addAnnotatedClass(Game.class)
                         .buildMetadata().buildSessionFactory();
             } catch (Exception e) {
                 e.printStackTrace();
