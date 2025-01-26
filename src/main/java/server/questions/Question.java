@@ -27,4 +27,19 @@ public class Question {
         this.category = category;
         this.answers = answers;
     }
+
+    public String getCorrectOption(){
+        String correctOption = "";
+        for(Answer answer: answers){
+            if(answer.getCorrect() == 1){
+                correctOption = answer.getAnswer();
+            }
+        }
+        return correctOption;
+    }
+
+    public boolean isCorrectIndex(int index){
+        Answer answer = answers.get(index);
+        return answer.getCorrect() == 1;
+    }
 }
