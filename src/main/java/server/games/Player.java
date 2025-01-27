@@ -22,12 +22,9 @@ public class Player {
     @OneToMany(mappedBy = "player")
     private List<Game> games;
 
-    public Player(String name, String pass, int maxScore, Instant registrationDate, List<Game> games) {
+    public Player(String name, String pass) {
         this.name = name;
         this.pass = pass;
-        this.maxScore = maxScore;
-        this.registrationDate = registrationDate;
-        this.games = games;
     }
 
     public void addGame(Game game){
