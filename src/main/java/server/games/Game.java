@@ -20,9 +20,8 @@ public class Game {
     @ManyToOne
     private Player player;
 
-    public Game(int score, LocalDateTime date, Player player) {
+    public Game(int score, Player player) {
         this.score = score;
-        this.date = date;
         this.player = player;
     }
 }

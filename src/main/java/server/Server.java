@@ -73,10 +73,10 @@ public class Server {
         String password = sc.nextLine();
         Player player = new Player(nombre, password);
         if(PlayerDAO.comprobarPlayer(nombre, password)){
-            System.out.println("El jugador ya existe.");
+            System.err.println("El jugador ya existe.");
         } else {
             PlayerDAO.create(player);
-            System.err.println("Jugador creado.");
+            System.out.println("Jugador creado.");
         }
     }
 }

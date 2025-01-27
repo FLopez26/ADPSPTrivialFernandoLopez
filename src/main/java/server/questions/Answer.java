@@ -20,12 +20,4 @@ public class Answer {
         this.question = question;
         this.answer = answer;
     }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public int getCorrect() {
-        return correct;
-    }
 }
