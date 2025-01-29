@@ -7,11 +7,13 @@ import server.questions.Question;
 
 import java.util.ArrayList;
 
+import static server.dao.HibernateUtil.getSessionFactory;
+
 public class QuestionDAO {
 
     public static ArrayList<Question> getSixQuestions(){
         ArrayList<Question> questions = new ArrayList<>();
-        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+        try(Session session = getSessionFactory().openSession()){
             session.beginTransaction();
             Category artAndLiterature = (Category) session.createQuery("from Category where name = 'Art and Literature'").uniqueResult();
             Category entertainment = (Category) session.createQuery("from Category where name = 'Entertainment'").uniqueResult();
@@ -36,5 +38,15 @@ public class QuestionDAO {
             System.err.println("Error: " + e.getMessage());
         }
         return questions;
+    }
+
+    public static void update(Question question){
+        try(Session session = getSessionFactory().openSession()){
+            session.getTransaction().begin();
+            session.merge(question);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
     }
 }

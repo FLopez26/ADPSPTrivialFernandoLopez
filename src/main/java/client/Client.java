@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Client {
@@ -31,19 +30,28 @@ public class Client {
             String code = in.readLine();
             if (code.equals("10")) {
                 System.out.println("Sesión iniciada");
-                while (true) {
-                    for (int i = 0; i < 6; i++) {
+                for (int f = 0; f < 4; f++) {
+                    for (int i = 0; i < 5; i++) {
+                        //Nombre de la categoria
+                        System.out.println(in.readLine());
+                        System.out.println(in.readLine());
+                        System.out.println(in.readLine());
+                        //Pregunta
+                        System.out.println(in.readLine());
+                        //Opciones de la pregunta
                         System.out.println(in.readLine());
                         System.out.println(in.readLine());
                         System.out.println(in.readLine());
                         System.out.println(in.readLine());
-                        System.out.println(in.readLine());
+                        //Usuario responde
                         respuesta = sc.nextLine();
                         out.println(respuesta);
+                        //Respuesta correcta o incorrecta
                         System.out.println(in.readLine());
                     }
                 }
-            } else {
+                System.out.println(in.readLine());
+            } else if (code.equals("11")){
                 System.out.println("Usuario o contraseña incorrectos.");
                 socket.close();
             }

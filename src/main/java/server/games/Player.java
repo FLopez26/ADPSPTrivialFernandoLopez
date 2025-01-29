@@ -27,16 +27,11 @@ public class Player {
         this.pass = pass;
     }
 
-    public void addGame(Game game){
-        games.add(game);
-    }
-
     public boolean updateMaxScore(int points){
         if(points > maxScore){
-            this.maxScore = points;
+            maxScore = points;
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 }

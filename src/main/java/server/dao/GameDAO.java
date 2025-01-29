@@ -2,6 +2,7 @@ package server.dao;
 
 import org.hibernate.Session;
 import server.games.Game;
+import server.games.Player;
 
 public class GameDAO {
     public static void create(Game game){
@@ -21,6 +22,17 @@ public class GameDAO {
             session.getTransaction().commit();
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    public static int gamesPerPlayer(Player player){
+        try(Session session = HibernateUtil.getSessionFactory().openSession();){
+            return session.createQuery("from Game where player = :player", Game.class)
+                    .setParameter("player", player)
+                    .getResultList().size();
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            return 0;
         }
     }
 }

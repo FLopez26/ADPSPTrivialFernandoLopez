@@ -2,9 +2,11 @@ package server;
 
 import lombok.Data;
 import server.dao.AnswerDAO;
+import server.dao.GameDAO;
 import server.dao.PlayerDAO;
 import server.dao.QuestionDAO;
 import server.games.Game;
+import server.games.Player;
 import server.questions.Answer;
 import server.questions.Question;
 
@@ -41,21 +43,50 @@ public class ClientGame extends Thread{
             String password = new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
 
             //Comprobación si existe el usuario
-            if(PlayerDAO.comprobarPlayer(name, password)){
+            if(PlayerDAO.checkPlayer(name, password)){
                 pw.println("10");
+                Player player = PlayerDAO.getPlayer(name, password);
+                game.setPlayer(player);
+
+                //Comienzan las preguntas
+                this.questions = QuestionDAO.getSixQuestions();
+                for(Question question: questions){
+                    ArrayList<Answer> answers = AnswerDAO.allAnswersOfQuestion(question.getId());
+                    pw.println("----------------------------------");
+                    pw.println(" --- " + question.getCategory().getName() + " --- ");
+                    pw.println("----------------------------------");
+                    pw.println(question.getQuestion());
+                    for(int i = 0, j = 1; i < answers.size(); i++, j++){
+                        pw.println(j + ".- " + answers.get(i).getAnswer());
+                    }
+                    String respuesta = new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
+
+                    if(answers.get(Integer.parseInt(respuesta) - 1).getCorrect() == 1){
+                        question.setNumCorrect(question.getNumCorrect() + 1);
+                        game.setScore(game.getScore() + 1);
+                        pw.println("Bien, has acertado, tienes " + game.getScore() + " punto/s");
+                    } else {
+                        question.setNumFailure(question.getNumFailure() + 1);
+                        pw.println("Lo siento, has fallado, la respuesta correcta era " + question.getCorrectOption() +
+                                ". Tienes " + game.getScore() + " punto/s");
+                    }
+                    QuestionDAO.update(question);
+                }
+                GameDAO.create(game);
+
+                if(player.updateMaxScore(game.getScore())){
+                    PlayerDAO.updateMaxScore(game.getScore(), player);
+                }
+                pw.println("Has terminado. Tu puntuación es de " + game.getScore() + " punto/s. En total has jugado " +
+                        GameDAO.gamesPerPlayer(player) + " partida/s y tu puntuación más alta ha sido " +
+                        PlayerDAO.getMaxScore() + " punto/s.");
             } else {
                 pw.println("11");
             }
 
-            //Comienzan las preguntas
-            this.questions = QuestionDAO.getSixQuestions();
-            for(Question question: questions){
-                ArrayList<Answer> answers = AnswerDAO.allAnswersOfQuestion(question.getId());
-                pw.println(question.getQuestion());
 
-            }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("Error: " + e.getMessage());
         }
     }
 }
