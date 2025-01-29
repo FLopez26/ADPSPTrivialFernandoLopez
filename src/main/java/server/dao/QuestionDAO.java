@@ -40,6 +40,34 @@ public class QuestionDAO {
         return questions;
     }
 
+    public static ArrayList<Question> getFaciles(){
+        ArrayList<Question> questions = new ArrayList<>();
+        try(Session session = getSessionFactory().openSession()){
+            session.beginTransaction();
+            questions = (ArrayList<Question>) session.createQuery("from Question order by numCorrect desc", Question.class)
+                    .setMaxResults(5)
+                    .getResultList();
+            session.getTransaction().commit();
+        } catch (Exception e){
+            System.err.println("Error: " + e.getMessage());
+        }
+        return questions;
+    }
+
+    public static ArrayList<Question> getDificiles(){
+        ArrayList<Question> questions = new ArrayList<>();
+        try(Session session = getSessionFactory().openSession()){
+            session.beginTransaction();
+            questions = (ArrayList<Question>) session.createQuery("from Question order by numFailure desc", Question.class)
+                    .setMaxResults(5)
+                    .getResultList();
+            session.getTransaction().commit();
+        } catch (Exception e){
+            System.err.println("Error: " + e.getMessage());
+        }
+        return questions;
+    }
+
     public static void update(Question question){
         try(Session session = getSessionFactory().openSession()){
             session.getTransaction().begin();

@@ -30,30 +30,40 @@ public class Client {
             String code = in.readLine();
             if (code.equals("10")) {
                 System.out.println("Sesión iniciada");
-                for (int f = 0; f < 4; f++) {
-                    for (int i = 0; i < 5; i++) {
-                        //Nombre de la categoria
-                        System.out.println(in.readLine());
-                        System.out.println(in.readLine());
-                        System.out.println(in.readLine());
-                        //Pregunta
-                        System.out.println(in.readLine());
-                        //Opciones de la pregunta
-                        System.out.println(in.readLine());
-                        System.out.println(in.readLine());
-                        System.out.println(in.readLine());
-                        System.out.println(in.readLine());
-                        //Usuario responde
-                        respuesta = sc.nextLine();
-                        out.println(respuesta);
-                        //Respuesta correcta o incorrecta
-                        System.out.println(in.readLine());
+                for (int i = 0; i < 6; i++) {
+                    //Nombre de la categoria
+                    System.out.println(in.readLine());
+                    System.out.println(in.readLine());
+                    System.out.println(in.readLine());
+                    //Pregunta
+                    System.out.println(in.readLine());
+                    //Opciones de la pregunta
+                    System.out.println(in.readLine());
+                    System.out.println(in.readLine());
+                    System.out.println(in.readLine());
+                    System.out.println(in.readLine());
+                    //Usuario responde con control de errores
+                    System.out.println(in.readLine());
+                    while (true){
+                        try {
+                            respuesta = sc.nextLine();
+                            int respuestaInt = Integer.parseInt(respuesta);
+                            if (respuestaInt < 1 || respuestaInt > 4){
+                                System.out.println("Introduce un número entre 1 y 4.");
+                            } else {
+                                out.println(respuesta);
+                                break;
+                            }
+                        } catch (NumberFormatException e){
+                            System.out.println("Introduce un número entre 1 y 4.");
+                        }
                     }
+                    //Respuesta correcta o incorrecta
+                    System.out.println(in.readLine());
                 }
                 System.out.println(in.readLine());
             } else if (code.equals("11")){
                 System.out.println("Usuario o contraseña incorrectos.");
-                socket.close();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

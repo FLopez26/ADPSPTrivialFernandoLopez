@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 
 @Data
 public class ClientGame extends Thread{
@@ -42,7 +43,7 @@ public class ClientGame extends Thread{
             pw.println("Introduzca su contraseña:");
             String password = new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
 
-            //Comprobación si existe el usuario
+            //Comprobación si existe el usuario y añadir el jugador a la partida
             if(PlayerDAO.checkPlayer(name, password)){
                 pw.println("10");
                 Player player = PlayerDAO.getPlayer(name, password);
@@ -51,17 +52,24 @@ public class ClientGame extends Thread{
                 //Comienzan las preguntas
                 this.questions = QuestionDAO.getSixQuestions();
                 for(Question question: questions){
+                    //Guardado en la variable answers todas las respuestas de la pregunta
                     ArrayList<Answer> answers = AnswerDAO.allAnswersOfQuestion(question.getId());
+
+                    //Envío de la categoría y la pregunta
                     pw.println("----------------------------------");
                     pw.println(" --- " + question.getCategory().getName() + " --- ");
                     pw.println("----------------------------------");
                     pw.println(question.getQuestion());
+
+                    //Envío de las opciones
                     for(int i = 0, j = 1; i < answers.size(); i++, j++){
                         pw.println(j + ".- " + answers.get(i).getAnswer());
                     }
-                    String respuesta = new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
 
-                    if(answers.get(Integer.parseInt(respuesta) - 1).getCorrect() == 1){
+                    //Recibir respuesta
+                    pw.println("Introduzca el número de la respuesta correcta: ");
+                    int respuesta = Integer.parseInt(new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine());
+                    if(answers.get(Integer.parseInt(String.valueOf(respuesta)) - 1).getCorrect() == 1){
                         question.setNumCorrect(question.getNumCorrect() + 1);
                         game.setScore(game.getScore() + 1);
                         pw.println("Bien, has acertado, tienes " + game.getScore() + " punto/s");
@@ -83,8 +91,7 @@ public class ClientGame extends Thread{
             } else {
                 pw.println("11");
             }
-
-
+            socket.close();
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
         }

@@ -24,4 +24,12 @@ public class Game {
         this.score = score;
         this.player = player;
     }
+
+    @Override
+    public String toString() {
+        return "Partida " + id + " --> " +
+                "  Puntuación: " + score +
+                "  ||  Fecha: " + date +
+                "  ||  Jugador: " + player.getName();
+    }
 }

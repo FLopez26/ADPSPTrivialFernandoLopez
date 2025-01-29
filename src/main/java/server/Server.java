@@ -1,8 +1,10 @@
 package server;
 
 import jdk.swing.interop.SwingInterOpUtils;
+import server.dao.GameDAO;
 import server.dao.HibernateUtil;
 import server.dao.PlayerDAO;
+import server.dao.QuestionDAO;
 import server.games.Player;
 
 import java.util.Scanner;
@@ -31,22 +33,23 @@ public class Server {
                         iniciarServidor();
                         break;
                     case 2:
-                        //historicoJugadas();
+                        historicoJugadas();
                         break;
                     case 3:
-                        //top10();
+                        top10();
                         break;
                     case 4:
-                        //reset();
+                        reset();
                         break;
                     case 5:
-                        //preguntasFacilesDificiles();
+                        preguntasFacilesDificiles();
                         break;
                     case 6:
                         crearJugador();
                         break;
                     case 0:
                         System.out.println("Saliendo del programa.");
+                        System.exit(0);
                         break;
                     default:
                         System.out.println("Introduzca una opción válida.");
@@ -62,6 +65,32 @@ public class Server {
     public static void iniciarServidor(){
         ServerClient serverClient = new ServerClient();
         serverClient.start();
+    }
+
+    //CASO DEL MENÚ 2
+    public static void historicoJugadas(){
+        System.out.println("Mostrando todas las partidas jugadas:");
+        GameDAO.verTodo().forEach(System.out::println);
+    }
+
+    //CASO DEL MENÚ 3
+    public static void top10(){
+        System.out.println("Mostrando el top 10 de partidas:");
+        GameDAO.top10().forEach(System.out::println);
+    }
+
+    //CASO DEL MENÚ 4
+    public static void reset(){
+        GameDAO.eliminarTodo();
+        System.out.println("Resultados reseteados.");
+    }
+
+    //CASO DEL MENÚ 5
+    public static void preguntasFacilesDificiles(){
+        System.out.println("Mostrando las 5 preguntas más fáciles:");
+        QuestionDAO.getFaciles().forEach(System.out::println);
+        System.out.println("Mostrando las 5 preguntas más difíciles:");
+        QuestionDAO.getDificiles().forEach(System.out::println);
     }
 
     //CASO DEL MENÚ 6
