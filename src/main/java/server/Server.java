@@ -96,7 +96,8 @@ public class Server {
      */
     public static void reset(){
         GameDAO.eliminarTodo();
-        System.out.println("Resultados reseteados.");
+        PlayerDAO.resetMaxScores();
+        System.out.println("Partidas y puntuación máxima de los jugadores eliminadas.");
     }
 
     //CASO DEL MENÚ 5

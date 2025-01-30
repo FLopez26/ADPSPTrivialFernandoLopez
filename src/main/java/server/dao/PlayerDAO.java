@@ -59,6 +59,16 @@ public class PlayerDAO {
         }
     }
 
+    public static void resetMaxScores(){
+        try(Session session = getSessionFactory().openSession()){
+            session.getTransaction().begin();
+            session.createQuery("update Player p set p.maxScore = 0").executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e){
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
     /**
      * Devuelve el 'maxScore' de un jugador pasado como parámetro.
      * @return int
