@@ -27,6 +27,11 @@ public class Player {
         this.pass = pass;
     }
 
+    /**
+     * Comprueba si el jugador ha superado su puntuación máxima, si es así la actualiza.
+     * @param points int
+     * @return 'true' si se ha actualizado la puntuación máxima, 'false' en caso contrario.
+     */
     public boolean updateMaxScore(int points){
         if(points > maxScore){
             maxScore = points;

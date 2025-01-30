@@ -52,6 +52,7 @@ public class ClientGame extends Thread{
                 //Comienzan las preguntas
                 this.questions = QuestionDAO.getSixQuestions();
                 for(Question question: questions){
+
                     //Guardado en la variable answers todas las respuestas de la pregunta
                     ArrayList<Answer> answers = AnswerDAO.allAnswersOfQuestion(question.getId());
 
@@ -68,26 +69,41 @@ public class ClientGame extends Thread{
 
                     //Recibir respuesta
                     pw.println("Introduzca el número de la respuesta correcta: ");
+
                     int respuesta = Integer.parseInt(new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine());
+
+                    //Comprobación de la respuesta
                     if(answers.get(Integer.parseInt(String.valueOf(respuesta)) - 1).getCorrect() == 1){
+
+                        //Al ser correcta, se suma 1 al número de aciertos de la pregunta y al score
                         question.setNumCorrect(question.getNumCorrect() + 1);
                         game.setScore(game.getScore() + 1);
                         pw.println("Bien, has acertado, tienes " + game.getScore() + " punto/s");
+
                     } else {
+
+                        //Al ser incorrecta, se suma 1 al número de fallos de la pregunta
                         question.setNumFailure(question.getNumFailure() + 1);
                         pw.println("Lo siento, has fallado, la respuesta correcta era " + question.getCorrectOption() +
                                 ". Tienes " + game.getScore() + " punto/s");
+
                     }
+
+                    //Actualización de la pregunta
                     QuestionDAO.update(question);
                 }
+                //Creación de la partida
                 GameDAO.create(game);
 
+                //Actualización de la puntuación máxima del jugador si es necesario
                 if(player.updateMaxScore(game.getScore())){
                     PlayerDAO.updateMaxScore(game.getScore(), player);
                 }
+
+                //Envío de la puntuación final
                 pw.println("Has terminado. Tu puntuación es de " + game.getScore() + " punto/s. En total has jugado " +
                         GameDAO.gamesPerPlayer(player) + " partida/s y tu puntuación más alta ha sido " +
-                        PlayerDAO.getMaxScore() + " punto/s.");
+                        PlayerDAO.getMaxScore(player) + " punto/s.");
             } else {
                 pw.println("11");
             }

@@ -14,10 +14,4 @@ public class Answer {
     @ManyToOne
     private Question question;
     private String answer;
-
-    public Answer(int correct, Question question, String answer) {
-        this.correct = correct;
-        this.question = question;
-        this.answer = answer;
-    }
 }

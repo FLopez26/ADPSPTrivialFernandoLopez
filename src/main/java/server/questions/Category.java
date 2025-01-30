@@ -11,9 +11,4 @@ public class Category {
     @Id
     private String name;
     private String color;
-
-    public Category(String name, String color) {
-        this.name = name;
-        this.color = color;
-    }
 }

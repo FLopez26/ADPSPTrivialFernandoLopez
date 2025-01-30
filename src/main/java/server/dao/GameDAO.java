@@ -4,10 +4,13 @@ import org.hibernate.Session;
 import server.games.Game;
 import server.games.Player;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GameDAO {
+    /**
+     * Crea una nueva partida en la base de datos. La nueva partida debe ser pasada como parámetro.
+     * @param game Game
+     */
     public static void create(Game game){
         try(Session session = HibernateUtil.getSessionFactory().openSession();){
             session.getTransaction().begin();
@@ -18,6 +21,9 @@ public class GameDAO {
         }
     }
 
+    /**
+     * Elimina todas las partidas de la base de datos.
+     */
     public static void eliminarTodo(){
         try(Session session = HibernateUtil.getSessionFactory().openSession();){
             session.getTransaction().begin();
@@ -28,6 +34,10 @@ public class GameDAO {
         }
     }
 
+    /**
+     * Devuelve todas las partidas de la base de datos.
+     * @return ArrayList<Game>
+     */
     public static ArrayList<Game> verTodo(){
         try(Session session = HibernateUtil.getSessionFactory().openSession();){
             return (ArrayList<Game>) session.createQuery("from Game", Game.class).getResultList();
@@ -37,6 +47,10 @@ public class GameDAO {
         }
     }
 
+    /**
+     * Devuelve las 10 partidas con mayor puntuación de la base de datos.
+     * @return ArrayList<Game>
+     */
     public static ArrayList<Game> top10(){
         try(Session session = HibernateUtil.getSessionFactory().openSession();){
             return (ArrayList<Game>) session.createQuery("from Game order by score desc", Game.class)
@@ -48,6 +62,11 @@ public class GameDAO {
         }
     }
 
+    /**
+     * Devuelve el número de partidas jugadas por un jugador, el jugador es pasado por parámetro.
+     * @param player Player
+     * @return int
+     */
     public static int gamesPerPlayer(Player player){
         try(Session session = HibernateUtil.getSessionFactory().openSession();){
             return session.createQuery("from Game where player = :player", Game.class)

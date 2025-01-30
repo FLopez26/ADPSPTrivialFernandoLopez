@@ -11,6 +11,10 @@ import static server.dao.HibernateUtil.getSessionFactory;
 
 public class QuestionDAO {
 
+    /**
+     * Devuelve 6 preguntas aleatorias, una de cada categoría.
+     * @return ArrayList<Question>
+     */
     public static ArrayList<Question> getSixQuestions(){
         ArrayList<Question> questions = new ArrayList<>();
         try(Session session = getSessionFactory().openSession()){
@@ -40,6 +44,10 @@ public class QuestionDAO {
         return questions;
     }
 
+    /**
+     * Devuelve las 5 preguntas más fáciles (las 5 preguntas con más aciertos).
+     * @return ArrayList<Question>
+     */
     public static ArrayList<Question> getFaciles(){
         ArrayList<Question> questions = new ArrayList<>();
         try(Session session = getSessionFactory().openSession()){
@@ -54,6 +62,10 @@ public class QuestionDAO {
         return questions;
     }
 
+    /**
+     * Devuelve las 5 preguntas más difíciles (las 5 preguntas con más fallos).
+     * @return ArrayList<Question>
+     */
     public static ArrayList<Question> getDificiles(){
         ArrayList<Question> questions = new ArrayList<>();
         try(Session session = getSessionFactory().openSession()){
@@ -68,6 +80,10 @@ public class QuestionDAO {
         return questions;
     }
 
+    /**
+     * Actualiza una pregunta.
+     * @param question Question
+     */
     public static void update(Question question){
         try(Session session = getSessionFactory().openSession()){
             session.getTransaction().begin();

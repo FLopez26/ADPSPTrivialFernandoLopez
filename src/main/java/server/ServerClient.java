@@ -9,6 +9,7 @@ public class ServerClient extends Thread{
     @Override
     public void run() {
         try (ServerSocket server = new ServerSocket(port)) {
+            //Bucle infinito para aceptar conexiones
             while (true) {
                 ClientGame clientGame = new ClientGame(server.accept());
                 clientGame.start();

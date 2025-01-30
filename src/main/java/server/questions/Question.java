@@ -20,14 +20,10 @@ public class Question {
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
 
-    public Question(String question, int numCorrect, int numFailure, Category category, List<Answer> answers) {
-        this.question = question;
-        this.numCorrect = numCorrect;
-        this.numFailure = numFailure;
-        this.category = category;
-        this.answers = answers;
-    }
-
+    /**
+     * Devuelve la opción correcta de la pregunta
+     * @return String
+     */
     public String getCorrectOption(){
         String correctOption = "";
         for(Answer answer: answers){
@@ -38,8 +34,11 @@ public class Question {
         return correctOption;
     }
 
-    public boolean isCorrectIndex(int index){
-        Answer answer = answers.get(index);
-        return answer.getCorrect() == 1;
+    @Override
+    public String toString(){
+        return "Pregunta de " + category.getName() + " --> " +
+                question +
+                "  ||  Aciertos: " + numCorrect +
+                "  ||  Fallos: " + numFailure;
     }
 }

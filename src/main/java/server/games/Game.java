@@ -20,11 +20,6 @@ public class Game {
     @ManyToOne
     private Player player;
 
-    public Game(int score, Player player) {
-        this.score = score;
-        this.player = player;
-    }
-
     @Override
     public String toString() {
         return "Partida " + id + " --> " +

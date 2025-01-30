@@ -61,39 +61,60 @@ public class Server {
         }
     }
 
+    /* MÉTODOS DE LAS OPCIONES DEL MENÚ */
+
     //CASO DEL MENÚ 1
+    /**
+     * Se inicia el servidor lanzando un hilo de la clase ServerClient.
+     */
     public static void iniciarServidor(){
         ServerClient serverClient = new ServerClient();
         serverClient.start();
     }
 
     //CASO DEL MENÚ 2
+    /**
+     * Muestra todas las partidas jugadas.
+     */
     public static void historicoJugadas(){
         System.out.println("Mostrando todas las partidas jugadas:");
         GameDAO.verTodo().forEach(System.out::println);
     }
 
     //CASO DEL MENÚ 3
+    /**
+     * Muestra el top 10 de las partidas jugadas.
+     */
     public static void top10(){
         System.out.println("Mostrando el top 10 de partidas:");
         GameDAO.top10().forEach(System.out::println);
     }
 
     //CASO DEL MENÚ 4
+    /**
+     * Resetea los resultados de las partidas jugadas.
+     */
     public static void reset(){
         GameDAO.eliminarTodo();
         System.out.println("Resultados reseteados.");
     }
 
     //CASO DEL MENÚ 5
+    /**
+     * Muestra las 5 preguntas más fáciles y las 5 más difíciles.
+     */
     public static void preguntasFacilesDificiles(){
         System.out.println("Mostrando las 5 preguntas más fáciles:");
         QuestionDAO.getFaciles().forEach(System.out::println);
+        System.out.println("-----------------------------------------");
         System.out.println("Mostrando las 5 preguntas más difíciles:");
         QuestionDAO.getDificiles().forEach(System.out::println);
     }
 
     //CASO DEL MENÚ 6
+    /**
+     * Crea un usuario introduciendo un nombre y contraseña por pantalla, siempre que este no exista ya.
+     */
     public static void crearJugador(){
         System.out.println("Introduce el nombre del jugador:");
         Scanner sc = new Scanner(System.in);
